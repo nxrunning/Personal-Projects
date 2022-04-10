@@ -1,0 +1,63 @@
+# Import required packages
+
+import random
+import numpy as np
+import scipy.stats
+import matplotlib.pyplot as plt
+import pandas as pd
+
+####----Create Monty Hall Game Simulation----####
+
+# Create empty lists to store simulation results output
+chance_of_winning_ifswitch_list = []
+chance_of_winning_ifdonotswitch_list = []
+percentage_diff_list = []
+
+# Create simulation using for-loops
+# Repeat 1000 trials with 1000 samples per trial
+for i in range(1000):
+    results_list = []
+    
+    for i in range(1000):
+        door_list = ["car", "goat", "goat"]
+        random.shuffle(door_list)
+    
+        chosen_door_number = random.sample(range(3), 1)
+        chosen_door = door_list[chosen_door_number[0]]
+    
+        if chosen_door != "car":
+            results_list.append(1)
+        else:
+            results_list.append(0)
+    
+  
+    chance_of_winning_ifswitch = sum(results_list)/len(results_list)*100              # Compute winning percentage if choose to switch
+    chance_of_winning_ifdonotswitch = 100 - chance_of_winning_ifswitch                # Compute winning percentage if choose not to switch
+    percentage_diff = chance_of_winning_ifswitch - chance_of_winning_ifdonotswitch    # Compute difference in winning percentage between the two strategies
+    
+    # Append the results to respective lists
+    chance_of_winning_ifswitch_list.append(chance_of_winning_ifswitch)                
+    chance_of_winning_ifdonotswitch_list.append(chance_of_winning_ifdonotswitch)
+    percentage_diff_list.append(percentage_diff)
+
+
+####----Analysis of the simulation results----####
+
+# Create a function to calculate 95% confidence intervals
+def mean_confidence_interval(data, confidence=0.95):
+    a = 1.0 * np.array(data)
+    n = len(a)
+    m, se = np.mean(a), scipy.stats.sem(a)
+    h = se * scipy.stats.t.ppf((1 + confidence) / 2., n-1)
+    return m, m-h, m+h
+
+# Compute 95% confidence intervals of chance of winning if choose to switch
+mean_confidence_interval(chance_of_winning_ifswitch_list)
+
+# Compute 95% confidence intervals of chance of winning if choose not to switch
+mean_confidence_interval(chance_of_winning_ifdonotswitch_list)
+
+# Compute 95% confidence intervals of difference in chances of winning between the two strategies
+mean_confidence_interval(percentage_diff_list)
+
+####----Simple visualisation of the simulation results----####
