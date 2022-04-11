@@ -13,8 +13,11 @@ chance_of_winning_ifswitch_list = []
 chance_of_winning_ifdonotswitch_list = []
 percentage_diff_list = []
 
+# Set a seed value for reproducibility
+random.seed(1234)
+
 # Create simulation using for-loops
-# Repeat 1000 trials with 1000 samples per trial
+# Repeat 10000 trials with 1000 samples per trial
 for i in range(1000):
     results_list = []
     
@@ -61,3 +64,46 @@ mean_confidence_interval(chance_of_winning_ifdonotswitch_list)
 mean_confidence_interval(percentage_diff_list)
 
 ####----Simple visualisation of the simulation results----####
+
+fig = plt.figure(figsize = (15,8))
+ax1, ax2, ax3 = fig.subplots(3, 1)
+
+# Title and caption of plot
+fig.suptitle("Comparison of winning odds between strategies", fontsize = 20, fontweight = "bold")
+fig.text(.99, .010, "Visualisation:@nxrunning", ha='right', fontsize = 15)
+
+# Subplot number 1
+ax1.set_title("Distribution of winning percentage if choose not to switch", loc = "left", fontweight = "bold")
+ax1.hist(chance_of_winning_ifswitch_list, alpha = 1, color = "#023047", edgecolor = "white", bins = (30))
+ax1.set_ylabel("Frequency")
+ax1.set_xlabel("Odds of winning (%)", fontsize = 13)
+ax1.annotate("95% Confidence Interval:\n[66.646, 66.705]", xy = (70, 500), fontsize = 13)
+
+# Subplot number 2
+ax2.set_title("Distribution of winning percentage if choose not to switch", loc = "left", fontweight = "bold")
+ax2.hist(chance_of_winning_ifdonotswitch_list, alpha = 1, color = "#ffb703", edgecolor = "white", bins = (30))
+ax2.set_xlabel("Odds of winning (%)", fontsize = 13)
+ax2.set_ylabel("Frequency")
+ax2.annotate("95% Confidence Interval:\n[33.295, 33.354]", xy = (36.7, 500), fontsize = 13)
+
+# Subplot number 3
+ax3.set_title("Distribution of differences in odds of winning between the two strategies", loc = "left", fontweight = "bold")
+ax3.hist(percentage_diff_list, alpha = 1, color = "#fb8500", edgecolor = "white", bins = (30))
+ax3.set_ylabel("Frequency")
+ax3.set_xlabel("Odds of winning (%)", fontsize = 13)
+ax3.annotate("95% Confidence Interval:\n[33.293, 33.410]", xy = (40, 500), fontsize = 13)
+fig.tight_layout()
+
+# Removing top and right borders
+ax1.spines['top'].set_visible(False)
+ax1.spines['right'].set_visible(False)
+ax2.spines['top'].set_visible(False)
+ax2.spines['right'].set_visible(False)
+ax3.spines['top'].set_visible(False)
+ax3.spines['right'].set_visible(False)
+
+# Adjust space between title and subplots
+plt.subplots_adjust(top=0.90)
+
+# Save plot
+fig.savefig('Montyhallproblemsimulation.png', dpi=500)
