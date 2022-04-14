@@ -18,7 +18,7 @@ random.seed(1234)
 
 # Create simulation using for-loops
 # Repeat 10000 trials with 1000 samples per trial
-for i in range(1000):
+for i in range(10000):
     results_list = []
     
     for i in range(1000):
